@@ -6,7 +6,7 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    ignores: ["dist/**", "node_modules/**", "demo/fixtures/**"]
+    ignores: ["dist/**", "action/dist/**", "node_modules/**", "demo/fixtures/**"]
   },
   {
     files: ["**/*.mjs", "scripts/**"],

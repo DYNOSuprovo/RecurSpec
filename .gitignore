@@ -1,5 +1,11 @@
 node_modules/
 dist/
+# Exception: the bundled GitHub Action entrypoint must be committed so that
+# `uses: chrisriv10/RecurSpec@<tag>` can execute it directly.
+!action/dist/
+action/dist/*
+!action/dist/index.js
+!action/dist/package.json
 *.log
 .DS_Store
 Thumbs.db

@@ -1,0 +1,16 @@
+# Fixture for the Action self-test expected-failure case. Deterministic on
+# every platform: the command fails with no actionable output, so the case
+# ends without recovery advice and the Action reports status "failed".
+version: 1
+cases:
+  - name: always-fails
+    run:
+      command: node
+      args: ["-e", "process.exit(1)"]
+    failure:
+      exitCode: nonzero
+    recovery:
+      source: output
+    verify:
+      rerunOriginal: true
+      exitCode: 0

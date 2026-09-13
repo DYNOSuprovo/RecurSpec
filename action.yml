@@ -1,0 +1,56 @@
+name: RecurSpec
+description: Test whether your error messages actually get users unstuck.
+author: chrisriv10
+inputs:
+  config:
+    description: Path to the RecurSpec config file, relative to the workspace root.
+    required: false
+    default: recurspec.yml
+  format:
+    description: Console output format. One of human, json, junit, markdown.
+    required: false
+    default: human
+  fail-fast:
+    description: Stop after the first failing contract. Must be "true" or "false".
+    required: false
+    default: "false"
+  dry-run:
+    description: Print the execution plan without running anything. Must be "true" or "false".
+    required: false
+    default: "false"
+  case:
+    description: Only run cases with these names. Comma-separated or newline-separated.
+    required: false
+    default: ""
+  tag:
+    description: Only run cases with these tags. Comma-separated or newline-separated.
+    required: false
+    default: ""
+  seed:
+    description: Record a seed in the run summary. Must be a number.
+    required: false
+    default: ""
+  junit:
+    description: Write a JUnit XML report to this path. Not supported with dry-run.
+    required: false
+    default: ""
+  markdown:
+    description: Write a Markdown report to this path. Not supported with dry-run.
+    required: false
+    default: ""
+outputs:
+  status:
+    description: Overall outcome. One of pass, failed, error, dry-run.
+  total:
+    description: Number of recovery contracts in the run (planned cases for dry-run, 0 when configuration failed).
+  passed:
+    description: Number of passing contracts. Always 0 for dry-run and error outcomes.
+  failed:
+    description: Number of failing contracts. Always 0 for dry-run and error outcomes.
+  junit-path:
+    description: Absolute path of the written JUnit report, or empty when the junit input was not set.
+  markdown-path:
+    description: Absolute path of the written Markdown report, or empty when the markdown input was not set.
+runs:
+  using: node24
+  main: action/dist/index.js

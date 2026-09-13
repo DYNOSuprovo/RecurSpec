@@ -160,6 +160,25 @@ Network isolation is not enforced by the local backend, so
 `safety.network: deny` stays advisory until a container backend exists.
 See Limitations.
 
+## GitHub Action
+
+```yaml
+- uses: actions/checkout@v4
+
+- uses: chrisriv10/RecurSpec@main
+  with:
+    config: recurspec.yml
+```
+
+The Action debuts in the upcoming `v0.2.0` release; the `v0.1.0` tag predates
+it, so `@main` here is development usage. After release, pin real workflows
+to `chrisriv10/RecurSpec@v0.2.0` or an immutable commit SHA.
+
+No Node or pnpm setup needed. The step fails when contracts fail, writes a
+Job Summary, and exposes `status`, `passed`, `failed`, and `total` outputs
+plus optional JUnit/Markdown report files. See `docs/github-action.md` for
+inputs, artifacts, dry runs, filtering, and security notes.
+
 ## CI
 
 ```yaml

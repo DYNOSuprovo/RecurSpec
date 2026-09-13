@@ -1,0 +1,76 @@
+name: Action self-test
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  bundle-freshness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build:action
+      - name: Committed bundle matches Action source
+        run: git diff --exit-code -- action/dist/index.js action/dist/package.json
+
+  self-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Passing config
+        id: passing
+        uses: ./
+        with:
+          config: ci/recurspec.ci.yml
+
+      - name: Passing run reports pass outputs
+        if: steps.passing.outputs.status != 'pass'
+        run: exit 1
+
+      - name: Reports and dry run
+        id: reports
+        uses: ./
+        with:
+          config: ci/recurspec.ci.yml
+          junit: recurspec-junit.xml
+          markdown: recurspec-summary.md
+
+      - name: Dry run plans without executing
+        id: dry
+        uses: ./
+        with:
+          config: ci/recurspec.ci.yml
+          dry-run: "true"
+
+      - name: Dry run reports dry-run status
+        if: steps.dry.outputs.status != 'dry-run'
+        run: exit 1
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recurspec-reports-${{ matrix.os }}
+          path: |
+            ${{ steps.reports.outputs.junit-path }}
+            ${{ steps.reports.outputs.markdown-path }}
+
+      - name: Expected failure
+        id: failing
+        continue-on-error: true
+        uses: ./
+        with:
+          config: action/self-test/failing.yml
+
+      - name: Failing run reports failed outputs
+        if: steps.failing.outputs.status != 'failed'
+        run: exit 1
