@@ -20,16 +20,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: chrisriv10/RecurSpec@main
+      - uses: chrisriv10/RecurSpec@v0.2.0
         with:
           config: recurspec.yml
 ```
 
-The Action debuts in the upcoming `v0.2.0` release: the `v0.1.0` tag predates
-it and cannot run Action steps. Runnable examples in this file use `@main`
-for development and pre-release evaluation only. After release, use
-`chrisriv10/RecurSpec@v0.2.0` (or an immutable commit SHA) instead; see
-Version pinning.
+The Action debuted in `v0.2.0`: the `v0.1.0` tag predates it and cannot run
+Action steps. Pin real workflows to an immutable release tag or commit SHA;
+see Version pinning.
 
 ## Inputs
 
@@ -94,7 +92,7 @@ reporter's cell escaping, so hostile text cannot break the table.
 The Action writes report files but never uploads them. Upload explicitly:
 
 ```yaml
-- uses: chrisriv10/RecurSpec@main
+- uses: chrisriv10/RecurSpec@v0.2.0
   id: recurspec
   with:
     config: recurspec.yml
@@ -114,7 +112,7 @@ The Action writes report files but never uploads them. Upload explicitly:
 Inspect recovery plans without executing anything:
 
 ```yaml
-- uses: chrisriv10/RecurSpec@main
+- uses: chrisriv10/RecurSpec@v0.2.0
   with:
     config: recurspec.yml
     dry-run: "true"
@@ -127,7 +125,7 @@ to describe; the step fails clearly if they are combined.
 ## Filtering
 
 ```yaml
-- uses: chrisriv10/RecurSpec@main
+- uses: chrisriv10/RecurSpec@v0.2.0
   with:
     config: recurspec.yml
     case: "deploy-before-init, expired-session"
@@ -139,8 +137,8 @@ to describe; the step fails clearly if they are combined.
 ## Version pinning
 
 Reference immutable versions in real workflows. The first tag that can run
-the Action will be `v0.2.0`; do not use `v0.1.0` for Action steps. Once
-`v0.2.0` exists, prefer it (or stronger, a full commit SHA) over `@main`:
+the Action is `v0.2.0`; do not use `v0.1.0` for Action steps. Prefer exact
+release tags (or stronger, a full commit SHA) over `@main`:
 
 ```yaml
 - uses: chrisriv10/RecurSpec@v0.2.0
@@ -182,4 +180,6 @@ follow-up steps consume them reliably.
 
 The entrypoint `action/dist/index.js` is a committed esbuild bundle built
 from `action/src/` via `pnpm build:action`. Rebuild it after any Action
-source change; CI fails if the bundle is stale.
+source change; CI fails if the bundle is stale. Contributors validating
+unreleased Action changes can point workflows at `@main`, but released
+workflows should use exact tags.

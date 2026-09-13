@@ -1,6 +1,6 @@
 {
   "name": "recurspec",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Test whether your error messages actually get users unstuck.",
   "type": "module",
   "license": "MIT",

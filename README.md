@@ -165,14 +165,12 @@ See Limitations.
 ```yaml
 - uses: actions/checkout@v4
 
-- uses: chrisriv10/RecurSpec@main
+- uses: chrisriv10/RecurSpec@v0.2.0
   with:
     config: recurspec.yml
 ```
 
-The Action debuts in the upcoming `v0.2.0` release; the `v0.1.0` tag predates
-it, so `@main` here is development usage. After release, pin real workflows
-to `chrisriv10/RecurSpec@v0.2.0` or an immutable commit SHA.
+Pin real workflows to an immutable release tag or commit SHA.
 
 No Node or pnpm setup needed. The step fails when contracts fail, writes a
 Job Summary, and exposes `status`, `passed`, `failed`, and `total` outputs
