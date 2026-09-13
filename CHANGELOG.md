@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- GitHub Action (`action.yml`): run recovery contracts in CI with
+  `uses: chrisriv10/RecurSpec`, with Job Summary, step outputs, and optional
+  JUnit/Markdown report files. See `docs/github-action.md`.
+
 ## 0.1.0
 
 ### Added
