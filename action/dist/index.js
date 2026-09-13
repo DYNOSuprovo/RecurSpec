@@ -46033,7 +46033,20 @@ function renderMarkdown(result) {
     const parts = [c3.originalCommand, ...c3.recoverySteps.map((s) => displayShort(s.command, s.args))];
     if (c3.status === "PASS" && c3.completion.mode === "retry") parts.push(c3.originalCommand);
     const chain = parts.join(" \u2192 ");
-    const recovery = c3.status === "PASS" ? "`" + chain + "`" : c3.status + " after `" + chain + "`";
+    let recovery;
+    if (c3.status === "PASS") {
+      recovery = "`" + chain + "`";
+    } else if (c3.status === "AMBIGUOUS_RECOVERY" && c3.extractedAdvice.length > 0) {
+      const shown = c3.extractedAdvice.slice(0, 5);
+      const candidates = shown.map((a2) => {
+        const cmd = a2.command + (a2.args.length > 0 ? " " + a2.args.join(" ") : "");
+        return "`" + cmd + "`";
+      });
+      const extra = c3.extractedAdvice.length > 5 ? " (+" + (c3.extractedAdvice.length - 5) + " more)" : "";
+      recovery = c3.status + " after `" + chain + "`: " + candidates.join(", ") + extra;
+    } else {
+      recovery = c3.status + " after `" + chain + "`";
+    }
     lines.push("| " + icon + " | " + escCell(c3.name) + " | " + escCell(recovery) + " |");
   }
   return lines.join("\n") + "\n";
