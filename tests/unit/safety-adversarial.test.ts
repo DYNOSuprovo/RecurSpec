@@ -76,6 +76,11 @@ describe("shell escape attempts are refused", () => {
     blocked("pwsh", ["-cwa", "evil"]);
     blocked("pwsh", ["-File", "/tmp/evil.ps1"]);
     blocked("pwsh", ["-EncodedCommand", "aGk="]);
+    blocked("pwsh", ["-e", "aGk="]);
+    blocked("pwsh", ["-ec", "aGk="]);
+    blocked("powershell", ["-EncodedCommand", "aGk="]);
+    blocked("powershell", ["-e", "aGk="]);
+    blocked("powershell", ["-ec", "aGk="]);
     blocked("cmd", ["/c", "dir"]);
     blocked("cmd", ["/k", "dir"]);
   });
